@@ -11,7 +11,9 @@
 @interface PizzaLocation : NSObject
 
 @property MKPointAnnotation *pizzaAnnotation;
-@property NSString *test;
+@property CLLocationDistance distanceFromUser;
+@property MKMapItem *pizzaMapItem;
+@property NSString *name;
 +(PizzaLocation *)createPizzeria:(MKMapItem *)mapitem distanceFromUserLocation:(CLLocation *)userLocation;
 
 @end

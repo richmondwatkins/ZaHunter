@@ -17,6 +17,7 @@
 		5DDC0EEC19EF03FB00B42AF5 /* MapKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDC0EEB19EF03FB00B42AF5 /* MapKit.framework */; };
 		5DDC0EEE19EF040B00B42AF5 /* CoreLocation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 5DDC0EED19EF040B00B42AF5 /* CoreLocation.framework */; };
 		5DDC0EF719EF11D600B42AF5 /* PizzaLocation.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DDC0EF619EF11D600B42AF5 /* PizzaLocation.m */; };
+		5DFB7CC519EF6BBD006E193E /* LocationDetailViewController.m in Sources */ = {isa = PBXBuildFile; fileRef = 5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -47,6 +48,8 @@
 		5DDC0EED19EF040B00B42AF5 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5DDC0EF519EF11D600B42AF5 /* PizzaLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PizzaLocation.h; path = ../PizzaLocation.h; sourceTree = "<group>"; };
 		5DDC0EF619EF11D600B42AF5 /* PizzaLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PizzaLocation.m; path = ../PizzaLocation.m; sourceTree = "<group>"; };
+		5DFB7CC319EF6BBD006E193E /* LocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDetailViewController.h; sourceTree = "<group>"; };
+		5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -72,6 +75,8 @@
 		5DDC0EB919EF030300B42AF5 = {
 			isa = PBXGroup;
 			children = (
+				5DFB7CC319EF6BBD006E193E /* LocationDetailViewController.h */,
+				5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */,
 				5DDC0EED19EF040B00B42AF5 /* CoreLocation.framework */,
 				5DDC0EEB19EF03FB00B42AF5 /* MapKit.framework */,
 				5DDC0EC419EF030300B42AF5 /* ZaHunter */,
@@ -232,6 +237,7 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				5DFB7CC519EF6BBD006E193E /* LocationDetailViewController.m in Sources */,
 				5DDC0ECE19EF030300B42AF5 /* ViewController.m in Sources */,
 				5DDC0ECB19EF030300B42AF5 /* AppDelegate.m in Sources */,
 				5DDC0EC819EF030300B42AF5 /* main.m in Sources */,
@@ -426,6 +432,7 @@
 				5DDC0EE719EF030300B42AF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 		5DDC0EE819EF030300B42AF5 /* Build configuration list for PBXNativeTarget "ZaHunterTests" */ = {
 			isa = XCConfigurationList;
@@ -434,6 +441,7 @@
 				5DDC0EEA19EF030300B42AF5 /* Release */,
 			);
 			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
 		};
 /* End XCConfigurationList section */
 	};
