@@ -22,6 +22,7 @@
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UILabel *travelTimeLabel;
 @property NSIndexPath *swipedCell;
+@property int asyncRequestCount;
 @end
 
 @implementation ViewController
@@ -54,6 +55,7 @@
 
     MKLocalSearch *localSearch = [[MKLocalSearch alloc] initWithRequest:localSearchRequest];
     [localSearch startWithCompletionHandler:^(MKLocalSearchResponse *response, NSError *error) {
+
         self.pizzaMapItemArray = [[NSMutableArray alloc] init];
         self.pizzaArray = [[NSMutableArray alloc] init];
         self.pizzaDictionary = [[NSMutableDictionary alloc] init];
@@ -64,17 +66,20 @@
             [self.pizzaMapItemArray addObject:pizzeria.pizzaMapItem];
         }
 
-        [self addAnnotationsToMap];
+        [self fetchPizzeriaReviews];
         [self.tableView reloadData];
     }];
 }
 
 -(void)addAnnotationsToMap{
+
     NSSortDescriptor *sorter = [[NSSortDescriptor alloc] initWithKey:@"distanceFromUser" ascending:YES];
     [self.pizzaArray sortUsingDescriptors:[NSArray arrayWithObject:sorter]];
 
     for (int i = 0; i <=3; i++) {
         PizzaLocation *pizzeria = self.pizzaArray[i];
+
+        pizzeria.pizzaAnnotation.subtitle = [NSString stringWithFormat:@"%@", pizzeria.rating  ];
         [self.mapView addAnnotation:pizzeria.pizzaAnnotation];
     }
     [self.mapView showAnnotations:self.mapView.annotations animated:YES];
@@ -82,23 +87,30 @@
 }
 
 -(void)showTotalTravelTime:(MKDirectionsTransportType)transportType{
-    [self.pizzaMapItemArray addObject:[MKMapItem mapItemForCurrentLocation]];
-    for(int i = 0; i <= self.pizzaMapItemArray.count; i++){
-        if (i < self.pizzaMapItemArray.count-1) {
-            MKDirectionsRequest *directionRequest = [[MKDirectionsRequest alloc] init];
-            [directionRequest setSource:self.pizzaMapItemArray[i]];
 
-            [directionRequest setDestination:self.pizzaMapItemArray[i+1]];
+    PizzaLocation *tempPizza = [[PizzaLocation alloc] init];
+    tempPizza.pizzaMapItem = [MKMapItem mapItemForCurrentLocation];
+    [self.pizzaArray insertObject:tempPizza atIndex:5];
+
+    for(int i = 0; i <= 4; i++){
+        if (i < 3) {
+            PizzaLocation *locationOne = self.pizzaArray[i];
+            PizzaLocation *locationTwo = self.pizzaArray[i+1];
+
+            MKDirectionsRequest *directionRequest = [[MKDirectionsRequest alloc] init];
+            [directionRequest setSource:locationOne.pizzaMapItem];
+
+            [directionRequest setDestination:locationTwo.pizzaMapItem];
             directionRequest.transportType = transportType;
             MKDirections *directions = [[MKDirections alloc] initWithRequest:directionRequest];
             [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
                 MKRoute *route = response.routes.firstObject;
                 self.transportTime += ((route.expectedTravelTime / 60) +50) / 60;
-                self.travelTimeLabel.text = [NSString stringWithFormat:@"%.0f hours", self.transportTime];
+                self.travelTimeLabel.text = [NSString stringWithFormat:@"%.2f hours", self.transportTime];
             }];
-
         }
     }
+    [self.pizzaArray removeObjectAtIndex:5];
 }
 
 -(NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section{
@@ -139,7 +151,7 @@
     MKPinAnnotationView *pin = [[MKPinAnnotationView alloc] initWithAnnotation:annotation reuseIdentifier:@"MyPinID"];
     pin.canShowCallout = YES;
     pin.rightCalloutAccessoryView  = [UIButton buttonWithType:UIButtonTypeDetailDisclosure];
-
+    pin.image = [UIImage imageNamed:@"pizza"];
     return pin;
 }
 
@@ -171,6 +183,32 @@
         [self showTotalTravelTime:(MKDirectionsTransportType)MKDirectionsTransportTypeAutomobile];
     }else{
         [self showTotalTravelTime:(MKDirectionsTransportType)MKDirectionsTransportTypeWalking];
+    }
+}
+
+
+-(void)fetchPizzeriaReviews{
+
+    for (PizzaLocation *pizzeria in self.pizzaArray) {
+        NSString *urlString =[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/search/json?location=%f,%f&radius=100&types=food&sensor=false&key=AIzaSyArPvnhx4BUiKnrYG6cyNX-YZL21LruNAQ",   pizzeria.placemark.location.coordinate.latitude,  pizzeria.placemark.location.coordinate.longitude];
+
+        NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlString]];
+
+        [NSURLConnection sendAsynchronousRequest: request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+            NSDictionary *results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+            NSArray *resultsArray = results[@"results"];
+            NSDictionary *selectedResults = resultsArray.firstObject;
+            NSString *urlStringWithID =[NSString stringWithFormat:@"https://maps.googleapis.com/maps/api/place/details/json?placeid=%@&key=AIzaSyArPvnhx4BUiKnrYG6cyNX-YZL21LruNAQ", selectedResults[@"place_id"]];
+
+            NSURLRequest *request = [NSURLRequest requestWithURL:[NSURL URLWithString:urlStringWithID]];
+
+            [NSURLConnection sendAsynchronousRequest: request queue:[NSOperationQueue mainQueue] completionHandler:^(NSURLResponse *response, NSData *data, NSError *connectionError) {
+                NSDictionary *results = [NSJSONSerialization JSONObjectWithData:data options:NSJSONReadingMutableContainers error:nil];
+                pizzeria.rating = results[@"result"][@"rating"];
+                [self addAnnotationsToMap]; //shows rating but screws up travel time
+            }];
+
+        }];
     }
 }
 

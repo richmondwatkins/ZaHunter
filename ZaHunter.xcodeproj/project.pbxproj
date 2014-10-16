@@ -48,8 +48,8 @@
 		5DDC0EED19EF040B00B42AF5 /* CoreLocation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreLocation.framework; path = System/Library/Frameworks/CoreLocation.framework; sourceTree = SDKROOT; };
 		5DDC0EF519EF11D600B42AF5 /* PizzaLocation.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = PizzaLocation.h; path = ../PizzaLocation.h; sourceTree = "<group>"; };
 		5DDC0EF619EF11D600B42AF5 /* PizzaLocation.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = PizzaLocation.m; path = ../PizzaLocation.m; sourceTree = "<group>"; };
-		5DFB7CC319EF6BBD006E193E /* LocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; path = LocationDetailViewController.h; sourceTree = "<group>"; };
-		5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; path = LocationDetailViewController.m; sourceTree = "<group>"; };
+		5DFB7CC319EF6BBD006E193E /* LocationDetailViewController.h */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.h; name = LocationDetailViewController.h; path = ../LocationDetailViewController.h; sourceTree = "<group>"; };
+		5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = LocationDetailViewController.m; path = ../LocationDetailViewController.m; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -75,8 +75,6 @@
 		5DDC0EB919EF030300B42AF5 = {
 			isa = PBXGroup;
 			children = (
-				5DFB7CC319EF6BBD006E193E /* LocationDetailViewController.h */,
-				5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */,
 				5DDC0EED19EF040B00B42AF5 /* CoreLocation.framework */,
 				5DDC0EEB19EF03FB00B42AF5 /* MapKit.framework */,
 				5DDC0EC419EF030300B42AF5 /* ZaHunter */,
@@ -97,6 +95,8 @@
 		5DDC0EC419EF030300B42AF5 /* ZaHunter */ = {
 			isa = PBXGroup;
 			children = (
+				5DFB7CC319EF6BBD006E193E /* LocationDetailViewController.h */,
+				5DFB7CC419EF6BBD006E193E /* LocationDetailViewController.m */,
 				5DDC0EF519EF11D600B42AF5 /* PizzaLocation.h */,
 				5DDC0EF619EF11D600B42AF5 /* PizzaLocation.m */,
 				5DDC0ECA19EF030300B42AF5 /* AppDelegate.m */,

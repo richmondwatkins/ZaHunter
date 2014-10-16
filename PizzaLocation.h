@@ -15,6 +15,7 @@
 @property MKMapItem *pizzaMapItem;
 @property NSString *name;
 @property MKPlacemark *placemark;
+@property NSNumber *rating;
 +(PizzaLocation *)createPizzeria:(MKMapItem *)mapitem distanceFromUserLocation:(CLLocation *)userLocation;
 
 @end
