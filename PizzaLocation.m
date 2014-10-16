@@ -15,10 +15,10 @@
     location.pizzaMapItem = mapitem;
     location.name = mapitem.name;
     MKPointAnnotation *annotation = [[MKPointAnnotation alloc] init];
-    MKPlacemark *placemark = mapitem.placemark;
-    annotation.coordinate = placemark.location.coordinate;
+    location.placemark = mapitem.placemark;
+    annotation.coordinate = location.placemark.location.coordinate;
 
-    CLLocation *pizzaLocation = [[CLLocation alloc] initWithCoordinate: placemark.location.coordinate altitude:1 horizontalAccuracy:1 verticalAccuracy:-1 timestamp:nil];
+    CLLocation *pizzaLocation = [[CLLocation alloc] initWithCoordinate: location.placemark.location.coordinate altitude:1 horizontalAccuracy:1 verticalAccuracy:-1 timestamp:nil];
     location.distanceFromUser = [userLocation distanceFromLocation:pizzaLocation];
     annotation.title = [NSString stringWithFormat:@"%.0f meters from your location", location.distanceFromUser ];
 

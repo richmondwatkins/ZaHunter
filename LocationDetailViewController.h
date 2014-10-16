@@ -7,7 +7,8 @@
 //
 
 #import <UIKit/UIKit.h>
-
+#import "PizzaLocation.h"
 @interface LocationDetailViewController : UIViewController
-
+@property PizzaLocation *pizzeria;
+@property CLLocationCoordinate2D userLocation;
 @end
