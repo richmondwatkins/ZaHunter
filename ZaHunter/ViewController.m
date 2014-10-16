@@ -17,7 +17,7 @@
 @property NSMutableArray *pizzaArray;
 @property NSMutableDictionary *pizzaDictionary;
 @property PizzaLocation *foundPizzeria;
-@property float walkingTime;
+@property float transportTime;
 @property CLLocationCoordinate2D userLocation;
 @property (strong, nonatomic) IBOutlet UITableView *tableView;
 @property (strong, nonatomic) IBOutlet UILabel *travelTimeLabel;
@@ -78,10 +78,10 @@
         [self.mapView addAnnotation:pizzeria.pizzaAnnotation];
     }
     [self.mapView showAnnotations:self.mapView.annotations animated:YES];
-    [self showTotalWalkingTime];
+    [self showTotalTravelTime:(MKDirectionsTransportType)MKDirectionsTransportTypeWalking];
 }
 
--(void)showTotalWalkingTime{
+-(void)showTotalTravelTime:(MKDirectionsTransportType)transportType{
     [self.pizzaMapItemArray addObject:[MKMapItem mapItemForCurrentLocation]];
     for(int i = 0; i <= self.pizzaMapItemArray.count; i++){
         if (i < self.pizzaMapItemArray.count-1) {
@@ -89,12 +89,12 @@
             [directionRequest setSource:self.pizzaMapItemArray[i]];
 
             [directionRequest setDestination:self.pizzaMapItemArray[i+1]];
-            directionRequest.transportType = MKDirectionsTransportTypeWalking;
+            directionRequest.transportType = transportType;
             MKDirections *directions = [[MKDirections alloc] initWithRequest:directionRequest];
             [directions calculateDirectionsWithCompletionHandler:^(MKDirectionsResponse *response, NSError *error) {
                 MKRoute *route = response.routes.firstObject;
-                self.walkingTime += ((route.expectedTravelTime / 60) +50) / 60;
-                self.travelTimeLabel.text = [NSString stringWithFormat:@"%.0f hours", self.walkingTime];
+                self.transportTime += ((route.expectedTravelTime / 60) +50) / 60;
+                self.travelTimeLabel.text = [NSString stringWithFormat:@"%.0f hours", self.transportTime];
             }];
 
         }
@@ -163,6 +163,14 @@
         LocationDetailViewController *locationCtrl = [segue destinationViewController];
         locationCtrl.pizzeria = self.foundPizzeria;
         locationCtrl.userLocation  = self.userLocation;
+    }
+}
+- (IBAction)walkOrDriveSegmentControl:(UISegmentedControl *)sender {
+    self.transportTime = 0;
+    if (sender.selectedSegmentIndex) {
+        [self showTotalTravelTime:(MKDirectionsTransportType)MKDirectionsTransportTypeAutomobile];
+    }else{
+        [self showTotalTravelTime:(MKDirectionsTransportType)MKDirectionsTransportTypeWalking];
     }
 }
 
